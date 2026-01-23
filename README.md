@@ -23,5 +23,5 @@ Es soll ein multimodales Eingabe-Add-on entwickelt werden, das es Nutzern mit ei
 ## Installation
 1. Repository klonen:
    ```bash
-   git clone https://gitlab.deine-domain.de/euer-team/projektname.git
+   git clone https://iversion.informatik.htw-dresden.de/s88129/recotext
    cd projektname
