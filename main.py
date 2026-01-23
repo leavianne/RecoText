@@ -8,8 +8,6 @@ import subprocess
 import codecs
 import threading
 
-from tests.hardware_test import run as run_hardware_test
-
 if sys.platform == "win32":
     sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, errors='replace')
     sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, errors='replace')
@@ -30,18 +28,11 @@ def main():
         try:
             print("\nVERFÜGBARE OPTIONEN:")
             print("1. HTML im Browser öffnen")
-            print("2. Hardware Test ausführen")
             print("0. Beenden")
             
-            var = input("\nMenü (0-2): ").strip()
+            var = input("\nMenü (0-1): ").strip()
             if var == "1":
                 run_messenger_html()          
-            elif var == "2":
-                print("\nStarte Hardware Test...")
-                try:
-                    run_hardware_test()
-                except ImportError:
-                    print("Fehler: Hardware Test nicht verfügbar")
             elif var == "0":
                 print("\nProgramm beendet")
                 return
