@@ -1,0 +1,70 @@
+<!-- Selbst erstellt -->
+
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add-on für Nachrichtendienste - Speech to text</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="phone-frame">
+
+        <!-- Statusleiste -->
+        <div class="status-bar">
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+            </div>
+            <div class="time" id="current-time"></div>
+            <div class="status-icons"><i class="fas fa-battery-three-quarters"></i></div>
+        </div>
+
+        <!-- Chat-Header -->
+        <div class="header">
+            <button class="back-btn"><i class="fas fa-chevron-left"></i></button>
+            <div class="contact-info">
+                <div class="contact-name">Anna</div>
+                <div class="contact-status">Online</div>
+            </div>
+            <div class="header-icons">
+                <i class="fas fa-video"></i>
+                <i class="fas fa-phone"></i>
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+        </div>
+
+        <!-- Nachrichtenbereich -->
+        <div class="messages-container" id="messages"></div>
+
+        <!-- Kontakt tippt -->
+        <div class="typing-indicator" id="typing-indicator">
+            <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <span class="typing-text">schreibt...</span>
+        </div>
+
+        <!-- Eingabebereich: Textfeld, Sende-Button -->
+        <div class="input-container">
+            <div class="input-icons">
+                <i class="fas fa-hand"></i>
+                <i class="fas fa-microphone-lines"></i>
+                <i class="fas fa-smile"></i>                    
+            </div>
+            <div class="input-wrapper">
+                <input type="text" class="message-input" id="message-input" placeholder="Nachricht..." autocomplete="off">
+            </div>  
+            <button class="send-btn" id="send-btn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+
+    <!-- JavaScript-Datei für die Messenger-Logik -->
+    <script src="script.js"></script>
+</body>
+</html>
