@@ -18,6 +18,7 @@ Es soll ein multimodales Eingabe-Add-on entwickelt werden, das es Nutzern mit ei
 
 ## Storyboard
 ![Storyboard vom Add-On](./img/Skizze.png)
+*Storyboard vom Add-On*
 
 ## Installation
 1. Repository klonen:
