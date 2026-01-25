@@ -20,8 +20,7 @@ Es soll ein multimodales Eingabe-Add-on entwickelt werden. Dieses ermöglicht Nu
 ![Storyboard vom Add-On](./img/Skizze.png)
 *Storyboard vom Add-On*
 
-## Installation
-Repository klonen:
+## Verwendung
 
    ```bash
    git clone https://iversion.informatik.htw-dresden.de/s88129/recotext
