@@ -3,7 +3,7 @@
 Ein Add-on für Nachrichtendienste, das Sprache, Gesten und Mimik erkennt und in Text + Emojis übersetzt – für barrierefreie, intuitive Kommunikation.
 
 ## Projektziel
-Es soll ein multimodales Eingabe-Add-on entwickelt werden, das es Nutzern mit eingeschränkter Handmotorik oder wenig Lust zu tippen ermöglicht, Messenger-Nachrichten schnell und emotional ausdrucksstark zu verfassen.
+Es soll ein multimodales Eingabe-Add-on entwickelt werden. Dieses ermöglicht Nutzern mit eingeschränkter Handmotorik oder wenig Lust zu tippen, Messenger-Nachrichten schnell und emotional ausdrucksstark zu verfassen. Dies soll durch die Erkennung von Emotionen und Handzeichen per Kamera sowie die Umwandlung von Sprache in Text erreicht werden.
 
 ## AMITUDE-Beschreibung
 **(A):** Ein Add-on für Nachrichtendienste um **(E):** soziale Interaktionen via Messenger zu pflegen, wenn **(U):** der User nicht die Tastatur verwenden möchte. Ihren Nutzen, findet dieses Add-on auf Geräten, wie einem **(D):** Laptop, Tablet und Handy, welche mit einer **(M):** Kamera und einem Mikrofon ausgestattet sind. Die Funktionalität des add-ons zeigt sich durch einen **(I):** bewussten Austausch durch Mikrofon und Videoerkennung, **(T):** welche neben dem speech-to-text, die Mimik und Gesten des Users auswertet und in Emojis umwandelt.
