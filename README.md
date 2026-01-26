@@ -18,9 +18,4 @@ Es soll ein multimodales Eingabe-Add-on entwickelt werden. Dieses ermöglicht Nu
 
 ## Storyboard
 ![Storyboard vom Add-On](./img/Skizze.png)
-*Storyboard vom Add-On*
-
-## Verwendung
-
-   ```bash
-   git clone https://iversion.informatik.htw-dresden.de/s88129/recotext
+*Storyboard vom Add-On, Erstellt mit Affinity, Figma und KI-generierten Bildern*
