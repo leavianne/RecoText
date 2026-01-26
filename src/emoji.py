@@ -7,7 +7,6 @@ from mediapipe.tasks.python import vision
 import time
 import urllib.request
 import os
-import numpy as np
 import sys
 import codecs
 
@@ -29,6 +28,16 @@ print("\nStarte Handzeichen-Erkennung...")
 
 print("\nPrüfe Modell-Datei...")
 model_file = "hand_landmarker.task"
+
+# Kamera
+h = 480
+b = 640
+
+# Fortschrittsbalken
+BAR_WIDTH = 200
+BAR_HEIGHT = 15
+BAR_X = 10
+BAR_Y = h - 30
 
 if not os.path.exists(model_file):
     print("Lade Modell herunter...")
@@ -94,9 +103,8 @@ if cap is None or not cap.isOpened():
     print("Keine Kamera gefunden!")
     exit(1)
 
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 cv2.namedWindow("Handzeichen-Erkennung mit Emojis", cv2.WINDOW_NORMAL)
+cv2.resizeWindow("Handzeichen-Erkennung mit Emojis", b, h)
 cv2.setWindowProperty("Handzeichen-Erkennung mit Emojis", cv2.WND_PROP_TOPMOST, 1)
 
 
@@ -188,8 +196,6 @@ GESTURE_CONFIRM_TIME = 2.0
 # Optimierte Variablen für Performance
 frame_count = 0
 start_time = time.time()
-last_fps_time = start_time
-fps_display = 0
 emoji_confirmed = False
 
 print("\nStarte Video-Erkennung...")
@@ -207,13 +213,6 @@ try:
         frame_count += 1
         frame = cv2.flip(frame, 1)
         h, w = frame.shape[:2]
-        
-        # FPS Berechnung
-        if frame_count % 15 == 0:
-            current_time = time.time()
-            if current_time > last_fps_time:
-                fps_display = int(15 / (current_time - last_fps_time))
-                last_fps_time = current_time
         
         # MediaPipe Verarbeitung
         try:
@@ -274,14 +273,51 @@ try:
                                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 1)
                     
                 elif stable_time < GESTURE_CONFIRM_TIME:
-                    # Zeige Countdown
+                    # Fortschrittsbalken
                     time_left = GESTURE_CONFIRM_TIME - stable_time
-                    progress = int((stable_time / GESTURE_CONFIRM_TIME) * 100)
-                    cv2.putText(frame, f"{gesture} ({progress}%)", (10, h-40), 
-                               cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
-                    cv2.putText(frame, f"Noch {time_left:.1f}s", (10, h-10), 
-                               cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 1)
-                    
+                    progress_ratio = min(stable_time / GESTURE_CONFIRM_TIME, 1.0)
+                    filled_width = int(BAR_WIDTH * progress_ratio)
+                    bar_x = 10
+                    bar_y = h - 35
+
+                    # Hintergrund (leer)
+                    cv2.rectangle(
+                        frame,
+                        (bar_x, bar_y),
+                        (bar_x + BAR_WIDTH, bar_y + BAR_HEIGHT),
+                        (180, 180, 180),
+                        -1
+                    )
+
+                    # Fortschritt (gefüllt)
+                    cv2.rectangle(
+                        frame,
+                        (bar_x, bar_y),
+                        (bar_x + filled_width, bar_y + BAR_HEIGHT),
+                        (0, 200, 0),
+                        -1
+                    )
+
+                    # Rahmen
+                    cv2.rectangle(
+                        frame,
+                        (bar_x, bar_y),
+                        (bar_x + BAR_WIDTH, bar_y + BAR_HEIGHT),
+                        (0, 0, 0),
+                        2
+                    )
+
+                    # Geste als Text darüber
+                    cv2.putText(
+                        frame,
+                        gesture,
+                        (bar_x, bar_y - 8),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        0.6,
+                        (0, 0, 0),
+                        2
+                    )
+
                 else:
                     cv2.putText(frame, f"{gesture} ✓", (10, h-40), 
                                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
@@ -323,6 +359,7 @@ try:
             
         # Schleife beenden, wenn Emoji erkannt wurde
         if emoji_confirmed:
+            filled_width = BAR_WIDTH
             break
 
 except KeyboardInterrupt:
