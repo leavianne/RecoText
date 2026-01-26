@@ -37,14 +37,9 @@ ROI_SIZE=(224,224)      # Eingabegröße für DeepFace
 STABILITY_DISTANCE=20   # Mindestbewegung des Gesichts (Pixel)
 STABLE_DURATION = 1.5   # Sekunden für stabile Emotion
 
-# Kamera
-h = 480
-b = 640
-
 # Fortschrittsbalken
 BAR_WIDTH = 200
 BAR_HEIGHT = 15
-BAR_MARGIN = 10
 
 # Initialisierung
 face_cascade=cv2.CascadeClassifier(cv2.data.haarcascades+'haarcascade_frontalface_default.xml')
@@ -54,12 +49,11 @@ backsub=cv2.createBackgroundSubtractorMOG2(history=200,varThreshold=25)
 last_face_center=None     # letzte bekannte Position des Gesichts
 cached_emotion="..."      # zwischengespeicherte Emotion
 last_emotion_time = None
-
 frame_count=0
 stable_emotion = None
 
 cv2.namedWindow("Emotions-Erkennung mit Emojis", cv2.WINDOW_NORMAL)
-cv2.resizeWindow("Emotions-Erkennung mit Emojis", b, h)
+cv2.resizeWindow("Emotions-Erkennung mit Emojis", 640, 480)
 cv2.setWindowProperty("Emotions-Erkennung mit Emojis", cv2.WND_PROP_TOPMOST, 1)
 
 # Hauptschleife
@@ -71,61 +65,8 @@ while True:
     gray=cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
 
     h_frame, w_frame = frame.shape[:2]
-    bar_x = BAR_MARGIN
-    bar_y = h_frame - BAR_HEIGHT - BAR_MARGIN
 
-    # Fortschrittsbalken berechnen
-    progress_ratio = 0.0
-    if last_emotion_time is not None:
-        elapsed = time.time() - last_emotion_time
-        progress_ratio = min(elapsed / STABLE_DURATION, 1.0)
-
-    filled_width = int(BAR_WIDTH * progress_ratio)
-
-    # Farbverlauf rot → grün
-    bar_color = (
-        int(255 * (1 - progress_ratio)),
-        int(255 * progress_ratio),
-        0
-    )
-
-    # Balken-Hintergrund
-    cv2.rectangle(
-        frame,
-        (bar_x, bar_y),
-        (bar_x + BAR_WIDTH, bar_y + BAR_HEIGHT),
-        (200, 200, 200),
-        -1
-    )
-
-    # Balken-Füllung
-    cv2.rectangle(
-        frame,
-        (bar_x, bar_y),
-        (bar_x + filled_width, bar_y + BAR_HEIGHT),
-        bar_color,
-        -1
-    )
-
-    # Balken-Rahmen
-    cv2.rectangle(
-        frame,
-        (bar_x, bar_y),
-        (bar_x + BAR_WIDTH, bar_y + BAR_HEIGHT),
-        (0, 0, 0),
-        2
-    )
-
-    # Text über dem Balken
-    cv2.putText(
-        frame,
-        "Emotion stabilisieren...",
-        (bar_x, bar_y - 8),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        0.6,
-        (0, 0, 0),
-        2
-    )
+    cv2.rectangle(frame, (0, h_frame-70), (250, h_frame), (255, 255, 255), -1)
 
     # Bewegungserkennung
     fgmask=backsub.apply(gray)
@@ -171,9 +112,58 @@ while True:
             stable_emotion = emotion
             last_emotion_time = time.time() 
 
+        # Fortschrittsbalken
+        progress_ratio = 0.0
+        if last_emotion_time is not None:
+            elapsed = time.time() - last_emotion_time
+            progress_ratio = min(elapsed / STABLE_DURATION, 1.0)
+
+        filled_width = int(BAR_WIDTH * progress_ratio)
+
+        bar_x = 10
+        bar_y = h_frame - 35
+
+        # Hintergrund (leer)
+        cv2.rectangle(
+            frame,
+            (bar_x, bar_y),
+            (bar_x + BAR_WIDTH, bar_y + BAR_HEIGHT),
+            (180, 180, 180),
+            -1
+        )
+
+        # Fortschritt (gefüllt)
+        cv2.rectangle(
+            frame,
+            (bar_x, bar_y),
+            (bar_x + filled_width, bar_y + BAR_HEIGHT),
+            (0, 200, 0),
+            -1
+        )
+
+        # Rahmen
+        cv2.rectangle(
+            frame,
+            (bar_x, bar_y),
+            (bar_x + BAR_WIDTH, bar_y + BAR_HEIGHT),
+            (0, 0, 0),
+            2
+        )
+
+        # Geste als Text darüber
+        cv2.putText(
+            frame,
+            cached_emotion,
+            (bar_x, bar_y - 8),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.6,
+            (0, 0, 0),
+            2
+        )
+
         # Anzeige der letzten bekannten Emotion
         emoji_display = EMOJI_MAP.get(cached_emotion, "")
-        cv2.putText(frame,cached_emotion,(x,y-10), cv2.FONT_HERSHEY_SIMPLEX,0.9,(0,0,255),2)
+        cv2.putText(frame,cached_emotion,(x,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
 
     # Anzeige & Beenden
     cv2.imshow("Emotions-Erkennung mit Emojis",frame)
