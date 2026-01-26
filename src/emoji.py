@@ -223,10 +223,7 @@ try:
             print(f"Erkennungsfehler: {e}")
             result = None
         
-        cv2.rectangle(frame, (0, 0), (w, 40), (0, 0, 0), -1)
         cv2.rectangle(frame, (0, h-70), (250, h), (255, 255, 255), -1)
-        cv2.putText(frame, "HANDZEICHEN-ERKENNUNG", (10, 30), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
         
         if result and result.hand_landmarks:
             hand_landmarks = result.hand_landmarks[0]
